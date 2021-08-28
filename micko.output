@@ -1,0 +1,1979 @@
+Terminals unused in grammar
+
+   ONLY_REL_EXP
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: lista_dekl
+
+    2 lista_dekl: deklaracija
+    3           | lista_dekl deklaracija
+
+    4 deklaracija: globalne_promenljive
+    5            | funkcija
+
+    6 globalne_promenljive: _TIP _ID _TZAREZ
+
+    7 $@1: %empty
+
+    8 funkcija: _TIP _ID $@1 _LZAGRADA parametri_funkcije _DZAGRADA telo_funkcije
+
+    9 parametri_funkcije: %empty
+   10                   | parametar
+
+   11 parametar: _TIP _ID
+   12          | parametar _ZAREZ _TIP _ID
+
+   13 $@2: %empty
+
+   14 telo_funkcije: _LVITICASTA lista_promenljivih $@2 lista_naredbi _DVITICASTA
+
+   15 lista_promenljivih: %empty
+   16                   | lista_promenljivih promenljiva
+
+   17 $@3: %empty
+
+   18 promenljiva: _TIP $@3 dekl_prom _TZAREZ
+
+   19 dekl_prom: _ID
+   20          | dekl_prom _ZAREZ _ID
+   21          | _ID _LUGLASTA literal _DUGLASTA
+
+   22 lista_naredbi: %empty
+   23              | lista_naredbi naredba
+
+   24 naredba: blok_naredba
+   25        | naredba_dodele
+   26        | if_naredba
+   27        | inc_naredba
+   28        | pp_oiai_naredba
+   29        | return_naredba
+   30        | pp_jiro_iskaz
+   31        | dec_naredba
+
+   32 blok_naredba: _LVITICASTA lista_naredbi _DVITICASTA
+
+   33 naredba_dodele: _ID _DODELA broj_exp _TZAREZ
+   34               | _ID _LUGLASTA literal _DUGLASTA _DODELA broj_exp _TZAREZ
+
+   35 broj_exp_pp: broj_exp
+
+   36 broj_exp: exp
+   37         | broj_exp _AOP exp
+
+   38 exp: poziv_funkcije
+   39    | _LZAGRADA broj_exp _DZAGRADA
+   40    | inc_exp
+   41    | pp_kondicionalni_izraz
+   42    | izraz
+   43    | dec_exp
+
+   44 literal: _INT
+   45        | _UINT
+
+   46 $@4: %empty
+
+   47 poziv_funkcije: _ID $@4 _LZAGRADA argument _DZAGRADA
+
+   48 argument: %empty
+   49         | argumenti_funkcije_vise_promenljivih
+
+   50 argumenti_funkcije_vise_promenljivih: broj_exp_pp
+   51                                     | argumenti_funkcije_vise_promenljivih _ZAREZ broj_exp_pp
+
+   52 if_naredba: if_part
+   53           | if_part _ELSE naredba
+
+   54 @5: %empty
+
+   55 $@6: %empty
+
+   56 if_part: _IF _LZAGRADA @5 pp_prosireni_uslov $@6 _DZAGRADA naredba
+
+   57 rel_exp: broj_exp_pp _ROP broj_exp_pp
+
+   58 pp_prosireni_uslov: prosireni_uslov
+
+   59 prosireni_uslov: rel_exp
+
+   60 $@7: %empty
+
+   61 prosireni_uslov: prosireni_uslov _LOP $@7 rel_exp
+
+   62 return_naredba: _RETURN broj_exp_pp _TZAREZ
+   63               | _RETURN _TZAREZ
+   64               | _RETURN _ID _LUGLASTA literal _DUGLASTA _TZAREZ
+
+   65 $@8: %empty
+
+   66 inc_naredba: _ID _INC $@8 _TZAREZ
+   67            | _ID _LUGLASTA literal _DUGLASTA _INC _TZAREZ
+
+   68 inc_exp: _ID _INC
+
+   69 pp_oiai_naredba: oiai_naredba
+
+   70 @9: %empty
+
+   71 $@10: %empty
+
+   72 oiai_naredba: _OIAI @9 pp_prosireni_uslov $@10 _HANA naredba
+
+   73 pp_jiro_iskaz: jiro_iskaz
+
+   74 @11: %empty
+
+   75 $@12: %empty
+
+   76 jiro_iskaz: _JIRO @11 _LZAGRADA _ID $@12 _DZAGRADA _LVITICASTA tranga_delovi toerana _DVITICASTA
+
+   77 tranga_delovi: tranga_deo
+   78              | tranga_delovi tranga_deo
+
+   79 $@13: %empty
+
+   80 tranga_deo: _TRANGA $@13 literal _IMPL naredba
+   81           | tranga_deo _FINISH _TZAREZ
+
+   82 toerana: %empty
+   83        | toerana_deo
+
+   84 $@14: %empty
+
+   85 toerana_deo: _TOERANA $@14 _IMPL naredba
+
+   86 pp_kondicionalni_izraz: kondicionalni_izraz
+
+   87 $@15: %empty
+
+   88 $@16: %empty
+
+   89 $@17: %empty
+
+   90 $@18: %empty
+
+   91 kondicionalni_izraz: _LZAGRADA pp_prosireni_uslov $@15 _DZAGRADA _UPITNIK $@16 izraz $@17 _DTACKA $@18 izraz
+
+   92 izraz: literal
+   93      | _ID
+
+   94 $@19: %empty
+
+   95 dec_naredba: _ID _DEC $@19 _TZAREZ
+   96            | _ID _LUGLASTA literal _DUGLASTA _DEC _TZAREZ
+
+   97 dec_exp: _ID _DEC
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+_TIP (258) 6 8 11 12 18
+_IF (259) 56
+_ELSE (260) 53
+_RETURN (261) 62 63 64
+_ID (262) 6 8 11 12 19 20 21 33 34 47 64 66 67 68 76 93 95 96 97
+_INT (263) 44
+_UINT (264) 45
+_LZAGRADA (265) 8 39 47 56 76 91
+_DZAGRADA (266) 8 39 47 56 76 91
+_LVITICASTA (267) 14 32 76
+_DVITICASTA (268) 14 32 76
+_DODELA (269) 33 34
+_TZAREZ (270) 6 18 33 34 62 63 64 66 67 81 95 96
+_AOP (271) 37
+_INC (272) 66 67 68
+_DEC (273) 95 96 97
+_ROP (274) 57
+_ZAREZ (275) 12 20 51
+_LUGLASTA (276) 21 34 64 67 96
+_DUGLASTA (277) 21 34 64 67 96
+_LOP (278) 61
+_OIAI (279) 72
+_HANA (280) 72
+_JIRO (281) 76
+_TRANGA (282) 80
+_FINISH (283) 81
+_TOERANA (284) 85
+_IMPL (285) 80 85
+_UPITNIK (286) 91
+_DTACKA (287) 91
+ONLY_IF (288)
+ONLY_REL_EXP (289)
+
+
+Nonterminals, with rules where they appear
+
+$accept (35)
+    on left: 0
+program (36)
+    on left: 1, on right: 0
+lista_dekl (37)
+    on left: 2 3, on right: 1 3
+deklaracija (38)
+    on left: 4 5, on right: 2 3
+globalne_promenljive (39)
+    on left: 6, on right: 4
+funkcija (40)
+    on left: 8, on right: 5
+$@1 (41)
+    on left: 7, on right: 8
+parametri_funkcije (42)
+    on left: 9 10, on right: 8
+parametar (43)
+    on left: 11 12, on right: 10 12
+telo_funkcije (44)
+    on left: 14, on right: 8
+$@2 (45)
+    on left: 13, on right: 14
+lista_promenljivih (46)
+    on left: 15 16, on right: 14 16
+promenljiva (47)
+    on left: 18, on right: 16
+$@3 (48)
+    on left: 17, on right: 18
+dekl_prom (49)
+    on left: 19 20 21, on right: 18 20
+lista_naredbi (50)
+    on left: 22 23, on right: 14 23 32
+naredba (51)
+    on left: 24 25 26 27 28 29 30 31, on right: 23 53 56 72 80 85
+blok_naredba (52)
+    on left: 32, on right: 24
+naredba_dodele (53)
+    on left: 33 34, on right: 25
+broj_exp_pp (54)
+    on left: 35, on right: 50 51 57 62
+broj_exp (55)
+    on left: 36 37, on right: 33 34 35 37 39
+exp (56)
+    on left: 38 39 40 41 42 43, on right: 36 37
+literal (57)
+    on left: 44 45, on right: 21 34 64 67 80 92 96
+poziv_funkcije (58)
+    on left: 47, on right: 38
+$@4 (59)
+    on left: 46, on right: 47
+argument (60)
+    on left: 48 49, on right: 47
+argumenti_funkcije_vise_promenljivih (61)
+    on left: 50 51, on right: 49 51
+if_naredba (62)
+    on left: 52 53, on right: 26
+if_part (63)
+    on left: 56, on right: 52 53
+@5 (64)
+    on left: 54, on right: 56
+$@6 (65)
+    on left: 55, on right: 56
+rel_exp (66)
+    on left: 57, on right: 59 61
+pp_prosireni_uslov (67)
+    on left: 58, on right: 56 72 91
+prosireni_uslov (68)
+    on left: 59 61, on right: 58 61
+$@7 (69)
+    on left: 60, on right: 61
+return_naredba (70)
+    on left: 62 63 64, on right: 29
+inc_naredba (71)
+    on left: 66 67, on right: 27
+$@8 (72)
+    on left: 65, on right: 66
+inc_exp (73)
+    on left: 68, on right: 40
+pp_oiai_naredba (74)
+    on left: 69, on right: 28
+oiai_naredba (75)
+    on left: 72, on right: 69
+@9 (76)
+    on left: 70, on right: 72
+$@10 (77)
+    on left: 71, on right: 72
+pp_jiro_iskaz (78)
+    on left: 73, on right: 30
+jiro_iskaz (79)
+    on left: 76, on right: 73
+@11 (80)
+    on left: 74, on right: 76
+$@12 (81)
+    on left: 75, on right: 76
+tranga_delovi (82)
+    on left: 77 78, on right: 76 78
+tranga_deo (83)
+    on left: 80 81, on right: 77 78 81
+$@13 (84)
+    on left: 79, on right: 80
+toerana (85)
+    on left: 82 83, on right: 76
+toerana_deo (86)
+    on left: 85, on right: 83
+$@14 (87)
+    on left: 84, on right: 85
+pp_kondicionalni_izraz (88)
+    on left: 86, on right: 41
+kondicionalni_izraz (89)
+    on left: 91, on right: 86
+$@15 (90)
+    on left: 87, on right: 91
+$@16 (91)
+    on left: 88, on right: 91
+$@17 (92)
+    on left: 89, on right: 91
+$@18 (93)
+    on left: 90, on right: 91
+izraz (94)
+    on left: 92 93, on right: 42 91
+dec_naredba (95)
+    on left: 95 96, on right: 31
+$@19 (96)
+    on left: 94, on right: 95
+dec_exp (97)
+    on left: 97, on right: 43
+
+
+State 0
+
+    0 $accept: . program $end
+
+    _TIP  shift, and go to state 1
+
+    program               go to state 2
+    lista_dekl            go to state 3
+    deklaracija           go to state 4
+    globalne_promenljive  go to state 5
+    funkcija              go to state 6
+
+
+State 1
+
+    6 globalne_promenljive: _TIP . _ID _TZAREZ
+    8 funkcija: _TIP . _ID $@1 _LZAGRADA parametri_funkcije _DZAGRADA telo_funkcije
+
+    _ID  shift, and go to state 7
+
+
+State 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 8
+
+
+State 3
+
+    1 program: lista_dekl .
+    3 lista_dekl: lista_dekl . deklaracija
+
+    _TIP  shift, and go to state 1
+
+    $default  reduce using rule 1 (program)
+
+    deklaracija           go to state 9
+    globalne_promenljive  go to state 5
+    funkcija              go to state 6
+
+
+State 4
+
+    2 lista_dekl: deklaracija .
+
+    $default  reduce using rule 2 (lista_dekl)
+
+
+State 5
+
+    4 deklaracija: globalne_promenljive .
+
+    $default  reduce using rule 4 (deklaracija)
+
+
+State 6
+
+    5 deklaracija: funkcija .
+
+    $default  reduce using rule 5 (deklaracija)
+
+
+State 7
+
+    6 globalne_promenljive: _TIP _ID . _TZAREZ
+    8 funkcija: _TIP _ID . $@1 _LZAGRADA parametri_funkcije _DZAGRADA telo_funkcije
+
+    _TZAREZ  shift, and go to state 10
+
+    $default  reduce using rule 7 ($@1)
+
+    $@1  go to state 11
+
+
+State 8
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 9
+
+    3 lista_dekl: lista_dekl deklaracija .
+
+    $default  reduce using rule 3 (lista_dekl)
+
+
+State 10
+
+    6 globalne_promenljive: _TIP _ID _TZAREZ .
+
+    $default  reduce using rule 6 (globalne_promenljive)
+
+
+State 11
+
+    8 funkcija: _TIP _ID $@1 . _LZAGRADA parametri_funkcije _DZAGRADA telo_funkcije
+
+    _LZAGRADA  shift, and go to state 12
+
+
+State 12
+
+    8 funkcija: _TIP _ID $@1 _LZAGRADA . parametri_funkcije _DZAGRADA telo_funkcije
+
+    _TIP  shift, and go to state 13
+
+    $default  reduce using rule 9 (parametri_funkcije)
+
+    parametri_funkcije  go to state 14
+    parametar           go to state 15
+
+
+State 13
+
+   11 parametar: _TIP . _ID
+
+    _ID  shift, and go to state 16
+
+
+State 14
+
+    8 funkcija: _TIP _ID $@1 _LZAGRADA parametri_funkcije . _DZAGRADA telo_funkcije
+
+    _DZAGRADA  shift, and go to state 17
+
+
+State 15
+
+   10 parametri_funkcije: parametar .
+   12 parametar: parametar . _ZAREZ _TIP _ID
+
+    _ZAREZ  shift, and go to state 18
+
+    $default  reduce using rule 10 (parametri_funkcije)
+
+
+State 16
+
+   11 parametar: _TIP _ID .
+
+    $default  reduce using rule 11 (parametar)
+
+
+State 17
+
+    8 funkcija: _TIP _ID $@1 _LZAGRADA parametri_funkcije _DZAGRADA . telo_funkcije
+
+    _LVITICASTA  shift, and go to state 19
+
+    telo_funkcije  go to state 20
+
+
+State 18
+
+   12 parametar: parametar _ZAREZ . _TIP _ID
+
+    _TIP  shift, and go to state 21
+
+
+State 19
+
+   14 telo_funkcije: _LVITICASTA . lista_promenljivih $@2 lista_naredbi _DVITICASTA
+
+    $default  reduce using rule 15 (lista_promenljivih)
+
+    lista_promenljivih  go to state 22
+
+
+State 20
+
+    8 funkcija: _TIP _ID $@1 _LZAGRADA parametri_funkcije _DZAGRADA telo_funkcije .
+
+    $default  reduce using rule 8 (funkcija)
+
+
+State 21
+
+   12 parametar: parametar _ZAREZ _TIP . _ID
+
+    _ID  shift, and go to state 23
+
+
+State 22
+
+   14 telo_funkcije: _LVITICASTA lista_promenljivih . $@2 lista_naredbi _DVITICASTA
+   16 lista_promenljivih: lista_promenljivih . promenljiva
+
+    _TIP  shift, and go to state 24
+
+    $default  reduce using rule 13 ($@2)
+
+    $@2          go to state 25
+    promenljiva  go to state 26
+
+
+State 23
+
+   12 parametar: parametar _ZAREZ _TIP _ID .
+
+    $default  reduce using rule 12 (parametar)
+
+
+State 24
+
+   18 promenljiva: _TIP . $@3 dekl_prom _TZAREZ
+
+    $default  reduce using rule 17 ($@3)
+
+    $@3  go to state 27
+
+
+State 25
+
+   14 telo_funkcije: _LVITICASTA lista_promenljivih $@2 . lista_naredbi _DVITICASTA
+
+    $default  reduce using rule 22 (lista_naredbi)
+
+    lista_naredbi  go to state 28
+
+
+State 26
+
+   16 lista_promenljivih: lista_promenljivih promenljiva .
+
+    $default  reduce using rule 16 (lista_promenljivih)
+
+
+State 27
+
+   18 promenljiva: _TIP $@3 . dekl_prom _TZAREZ
+
+    _ID  shift, and go to state 29
+
+    dekl_prom  go to state 30
+
+
+State 28
+
+   14 telo_funkcije: _LVITICASTA lista_promenljivih $@2 lista_naredbi . _DVITICASTA
+   23 lista_naredbi: lista_naredbi . naredba
+
+    _IF          shift, and go to state 31
+    _RETURN      shift, and go to state 32
+    _ID          shift, and go to state 33
+    _LVITICASTA  shift, and go to state 34
+    _DVITICASTA  shift, and go to state 35
+    _OIAI        shift, and go to state 36
+    _JIRO        shift, and go to state 37
+
+    naredba          go to state 38
+    blok_naredba     go to state 39
+    naredba_dodele   go to state 40
+    if_naredba       go to state 41
+    if_part          go to state 42
+    return_naredba   go to state 43
+    inc_naredba      go to state 44
+    pp_oiai_naredba  go to state 45
+    oiai_naredba     go to state 46
+    pp_jiro_iskaz    go to state 47
+    jiro_iskaz       go to state 48
+    dec_naredba      go to state 49
+
+
+State 29
+
+   19 dekl_prom: _ID .
+   21          | _ID . _LUGLASTA literal _DUGLASTA
+
+    _LUGLASTA  shift, and go to state 50
+
+    $default  reduce using rule 19 (dekl_prom)
+
+
+State 30
+
+   18 promenljiva: _TIP $@3 dekl_prom . _TZAREZ
+   20 dekl_prom: dekl_prom . _ZAREZ _ID
+
+    _TZAREZ  shift, and go to state 51
+    _ZAREZ   shift, and go to state 52
+
+
+State 31
+
+   56 if_part: _IF . _LZAGRADA @5 pp_prosireni_uslov $@6 _DZAGRADA naredba
+
+    _LZAGRADA  shift, and go to state 53
+
+
+State 32
+
+   62 return_naredba: _RETURN . broj_exp_pp _TZAREZ
+   63               | _RETURN . _TZAREZ
+   64               | _RETURN . _ID _LUGLASTA literal _DUGLASTA _TZAREZ
+
+    _ID        shift, and go to state 54
+    _INT       shift, and go to state 55
+    _UINT      shift, and go to state 56
+    _LZAGRADA  shift, and go to state 57
+    _TZAREZ    shift, and go to state 58
+
+    broj_exp_pp             go to state 59
+    broj_exp                go to state 60
+    exp                     go to state 61
+    literal                 go to state 62
+    poziv_funkcije          go to state 63
+    inc_exp                 go to state 64
+    pp_kondicionalni_izraz  go to state 65
+    kondicionalni_izraz     go to state 66
+    izraz                   go to state 67
+    dec_exp                 go to state 68
+
+
+State 33
+
+   33 naredba_dodele: _ID . _DODELA broj_exp _TZAREZ
+   34               | _ID . _LUGLASTA literal _DUGLASTA _DODELA broj_exp _TZAREZ
+   66 inc_naredba: _ID . _INC $@8 _TZAREZ
+   67            | _ID . _LUGLASTA literal _DUGLASTA _INC _TZAREZ
+   95 dec_naredba: _ID . _DEC $@19 _TZAREZ
+   96            | _ID . _LUGLASTA literal _DUGLASTA _DEC _TZAREZ
+
+    _DODELA    shift, and go to state 69
+    _INC       shift, and go to state 70
+    _DEC       shift, and go to state 71
+    _LUGLASTA  shift, and go to state 72
+
+
+State 34
+
+   32 blok_naredba: _LVITICASTA . lista_naredbi _DVITICASTA
+
+    $default  reduce using rule 22 (lista_naredbi)
+
+    lista_naredbi  go to state 73
+
+
+State 35
+
+   14 telo_funkcije: _LVITICASTA lista_promenljivih $@2 lista_naredbi _DVITICASTA .
+
+    $default  reduce using rule 14 (telo_funkcije)
+
+
+State 36
+
+   72 oiai_naredba: _OIAI . @9 pp_prosireni_uslov $@10 _HANA naredba
+
+    $default  reduce using rule 70 (@9)
+
+    @9  go to state 74
+
+
+State 37
+
+   76 jiro_iskaz: _JIRO . @11 _LZAGRADA _ID $@12 _DZAGRADA _LVITICASTA tranga_delovi toerana _DVITICASTA
+
+    $default  reduce using rule 74 (@11)
+
+    @11  go to state 75
+
+
+State 38
+
+   23 lista_naredbi: lista_naredbi naredba .
+
+    $default  reduce using rule 23 (lista_naredbi)
+
+
+State 39
+
+   24 naredba: blok_naredba .
+
+    $default  reduce using rule 24 (naredba)
+
+
+State 40
+
+   25 naredba: naredba_dodele .
+
+    $default  reduce using rule 25 (naredba)
+
+
+State 41
+
+   26 naredba: if_naredba .
+
+    $default  reduce using rule 26 (naredba)
+
+
+State 42
+
+   52 if_naredba: if_part .
+   53           | if_part . _ELSE naredba
+
+    _ELSE  shift, and go to state 76
+
+    $default  reduce using rule 52 (if_naredba)
+
+
+State 43
+
+   29 naredba: return_naredba .
+
+    $default  reduce using rule 29 (naredba)
+
+
+State 44
+
+   27 naredba: inc_naredba .
+
+    $default  reduce using rule 27 (naredba)
+
+
+State 45
+
+   28 naredba: pp_oiai_naredba .
+
+    $default  reduce using rule 28 (naredba)
+
+
+State 46
+
+   69 pp_oiai_naredba: oiai_naredba .
+
+    $default  reduce using rule 69 (pp_oiai_naredba)
+
+
+State 47
+
+   30 naredba: pp_jiro_iskaz .
+
+    $default  reduce using rule 30 (naredba)
+
+
+State 48
+
+   73 pp_jiro_iskaz: jiro_iskaz .
+
+    $default  reduce using rule 73 (pp_jiro_iskaz)
+
+
+State 49
+
+   31 naredba: dec_naredba .
+
+    $default  reduce using rule 31 (naredba)
+
+
+State 50
+
+   21 dekl_prom: _ID _LUGLASTA . literal _DUGLASTA
+
+    _INT   shift, and go to state 55
+    _UINT  shift, and go to state 56
+
+    literal  go to state 77
+
+
+State 51
+
+   18 promenljiva: _TIP $@3 dekl_prom _TZAREZ .
+
+    $default  reduce using rule 18 (promenljiva)
+
+
+State 52
+
+   20 dekl_prom: dekl_prom _ZAREZ . _ID
+
+    _ID  shift, and go to state 78
+
+
+State 53
+
+   56 if_part: _IF _LZAGRADA . @5 pp_prosireni_uslov $@6 _DZAGRADA naredba
+
+    $default  reduce using rule 54 (@5)
+
+    @5  go to state 79
+
+
+State 54
+
+   47 poziv_funkcije: _ID . $@4 _LZAGRADA argument _DZAGRADA
+   64 return_naredba: _RETURN _ID . _LUGLASTA literal _DUGLASTA _TZAREZ
+   68 inc_exp: _ID . _INC
+   93 izraz: _ID .
+   97 dec_exp: _ID . _DEC
+
+    _INC       shift, and go to state 80
+    _DEC       shift, and go to state 81
+    _LUGLASTA  shift, and go to state 82
+
+    _LZAGRADA  reduce using rule 46 ($@4)
+    $default   reduce using rule 93 (izraz)
+
+    $@4  go to state 83
+
+
+State 55
+
+   44 literal: _INT .
+
+    $default  reduce using rule 44 (literal)
+
+
+State 56
+
+   45 literal: _UINT .
+
+    $default  reduce using rule 45 (literal)
+
+
+State 57
+
+   39 exp: _LZAGRADA . broj_exp _DZAGRADA
+   91 kondicionalni_izraz: _LZAGRADA . pp_prosireni_uslov $@15 _DZAGRADA _UPITNIK $@16 izraz $@17 _DTACKA $@18 izraz
+
+    _ID        shift, and go to state 84
+    _INT       shift, and go to state 55
+    _UINT      shift, and go to state 56
+    _LZAGRADA  shift, and go to state 57
+
+    broj_exp_pp             go to state 85
+    broj_exp                go to state 86
+    exp                     go to state 61
+    literal                 go to state 62
+    poziv_funkcije          go to state 63
+    rel_exp                 go to state 87
+    pp_prosireni_uslov      go to state 88
+    prosireni_uslov         go to state 89
+    inc_exp                 go to state 64
+    pp_kondicionalni_izraz  go to state 65
+    kondicionalni_izraz     go to state 66
+    izraz                   go to state 67
+    dec_exp                 go to state 68
+
+
+State 58
+
+   63 return_naredba: _RETURN _TZAREZ .
+
+    $default  reduce using rule 63 (return_naredba)
+
+
+State 59
+
+   62 return_naredba: _RETURN broj_exp_pp . _TZAREZ
+
+    _TZAREZ  shift, and go to state 90
+
+
+State 60
+
+   35 broj_exp_pp: broj_exp .
+   37 broj_exp: broj_exp . _AOP exp
+
+    _AOP  shift, and go to state 91
+
+    $default  reduce using rule 35 (broj_exp_pp)
+
+
+State 61
+
+   36 broj_exp: exp .
+
+    $default  reduce using rule 36 (broj_exp)
+
+
+State 62
+
+   92 izraz: literal .
+
+    $default  reduce using rule 92 (izraz)
+
+
+State 63
+
+   38 exp: poziv_funkcije .
+
+    $default  reduce using rule 38 (exp)
+
+
+State 64
+
+   40 exp: inc_exp .
+
+    $default  reduce using rule 40 (exp)
+
+
+State 65
+
+   41 exp: pp_kondicionalni_izraz .
+
+    $default  reduce using rule 41 (exp)
+
+
+State 66
+
+   86 pp_kondicionalni_izraz: kondicionalni_izraz .
+
+    $default  reduce using rule 86 (pp_kondicionalni_izraz)
+
+
+State 67
+
+   42 exp: izraz .
+
+    $default  reduce using rule 42 (exp)
+
+
+State 68
+
+   43 exp: dec_exp .
+
+    $default  reduce using rule 43 (exp)
+
+
+State 69
+
+   33 naredba_dodele: _ID _DODELA . broj_exp _TZAREZ
+
+    _ID        shift, and go to state 84
+    _INT       shift, and go to state 55
+    _UINT      shift, and go to state 56
+    _LZAGRADA  shift, and go to state 57
+
+    broj_exp                go to state 92
+    exp                     go to state 61
+    literal                 go to state 62
+    poziv_funkcije          go to state 63
+    inc_exp                 go to state 64
+    pp_kondicionalni_izraz  go to state 65
+    kondicionalni_izraz     go to state 66
+    izraz                   go to state 67
+    dec_exp                 go to state 68
+
+
+State 70
+
+   66 inc_naredba: _ID _INC . $@8 _TZAREZ
+
+    $default  reduce using rule 65 ($@8)
+
+    $@8  go to state 93
+
+
+State 71
+
+   95 dec_naredba: _ID _DEC . $@19 _TZAREZ
+
+    $default  reduce using rule 94 ($@19)
+
+    $@19  go to state 94
+
+
+State 72
+
+   34 naredba_dodele: _ID _LUGLASTA . literal _DUGLASTA _DODELA broj_exp _TZAREZ
+   67 inc_naredba: _ID _LUGLASTA . literal _DUGLASTA _INC _TZAREZ
+   96 dec_naredba: _ID _LUGLASTA . literal _DUGLASTA _DEC _TZAREZ
+
+    _INT   shift, and go to state 55
+    _UINT  shift, and go to state 56
+
+    literal  go to state 95
+
+
+State 73
+
+   23 lista_naredbi: lista_naredbi . naredba
+   32 blok_naredba: _LVITICASTA lista_naredbi . _DVITICASTA
+
+    _IF          shift, and go to state 31
+    _RETURN      shift, and go to state 32
+    _ID          shift, and go to state 33
+    _LVITICASTA  shift, and go to state 34
+    _DVITICASTA  shift, and go to state 96
+    _OIAI        shift, and go to state 36
+    _JIRO        shift, and go to state 37
+
+    naredba          go to state 38
+    blok_naredba     go to state 39
+    naredba_dodele   go to state 40
+    if_naredba       go to state 41
+    if_part          go to state 42
+    return_naredba   go to state 43
+    inc_naredba      go to state 44
+    pp_oiai_naredba  go to state 45
+    oiai_naredba     go to state 46
+    pp_jiro_iskaz    go to state 47
+    jiro_iskaz       go to state 48
+    dec_naredba      go to state 49
+
+
+State 74
+
+   72 oiai_naredba: _OIAI @9 . pp_prosireni_uslov $@10 _HANA naredba
+
+    _ID        shift, and go to state 84
+    _INT       shift, and go to state 55
+    _UINT      shift, and go to state 56
+    _LZAGRADA  shift, and go to state 57
+
+    broj_exp_pp             go to state 85
+    broj_exp                go to state 60
+    exp                     go to state 61
+    literal                 go to state 62
+    poziv_funkcije          go to state 63
+    rel_exp                 go to state 87
+    pp_prosireni_uslov      go to state 97
+    prosireni_uslov         go to state 89
+    inc_exp                 go to state 64
+    pp_kondicionalni_izraz  go to state 65
+    kondicionalni_izraz     go to state 66
+    izraz                   go to state 67
+    dec_exp                 go to state 68
+
+
+State 75
+
+   76 jiro_iskaz: _JIRO @11 . _LZAGRADA _ID $@12 _DZAGRADA _LVITICASTA tranga_delovi toerana _DVITICASTA
+
+    _LZAGRADA  shift, and go to state 98
+
+
+State 76
+
+   53 if_naredba: if_part _ELSE . naredba
+
+    _IF          shift, and go to state 31
+    _RETURN      shift, and go to state 32
+    _ID          shift, and go to state 33
+    _LVITICASTA  shift, and go to state 34
+    _OIAI        shift, and go to state 36
+    _JIRO        shift, and go to state 37
+
+    naredba          go to state 99
+    blok_naredba     go to state 39
+    naredba_dodele   go to state 40
+    if_naredba       go to state 41
+    if_part          go to state 42
+    return_naredba   go to state 43
+    inc_naredba      go to state 44
+    pp_oiai_naredba  go to state 45
+    oiai_naredba     go to state 46
+    pp_jiro_iskaz    go to state 47
+    jiro_iskaz       go to state 48
+    dec_naredba      go to state 49
+
+
+State 77
+
+   21 dekl_prom: _ID _LUGLASTA literal . _DUGLASTA
+
+    _DUGLASTA  shift, and go to state 100
+
+
+State 78
+
+   20 dekl_prom: dekl_prom _ZAREZ _ID .
+
+    $default  reduce using rule 20 (dekl_prom)
+
+
+State 79
+
+   56 if_part: _IF _LZAGRADA @5 . pp_prosireni_uslov $@6 _DZAGRADA naredba
+
+    _ID        shift, and go to state 84
+    _INT       shift, and go to state 55
+    _UINT      shift, and go to state 56
+    _LZAGRADA  shift, and go to state 57
+
+    broj_exp_pp             go to state 85
+    broj_exp                go to state 60
+    exp                     go to state 61
+    literal                 go to state 62
+    poziv_funkcije          go to state 63
+    rel_exp                 go to state 87
+    pp_prosireni_uslov      go to state 101
+    prosireni_uslov         go to state 89
+    inc_exp                 go to state 64
+    pp_kondicionalni_izraz  go to state 65
+    kondicionalni_izraz     go to state 66
+    izraz                   go to state 67
+    dec_exp                 go to state 68
+
+
+State 80
+
+   68 inc_exp: _ID _INC .
+
+    $default  reduce using rule 68 (inc_exp)
+
+
+State 81
+
+   97 dec_exp: _ID _DEC .
+
+    $default  reduce using rule 97 (dec_exp)
+
+
+State 82
+
+   64 return_naredba: _RETURN _ID _LUGLASTA . literal _DUGLASTA _TZAREZ
+
+    _INT   shift, and go to state 55
+    _UINT  shift, and go to state 56
+
+    literal  go to state 102
+
+
+State 83
+
+   47 poziv_funkcije: _ID $@4 . _LZAGRADA argument _DZAGRADA
+
+    _LZAGRADA  shift, and go to state 103
+
+
+State 84
+
+   47 poziv_funkcije: _ID . $@4 _LZAGRADA argument _DZAGRADA
+   68 inc_exp: _ID . _INC
+   93 izraz: _ID .
+   97 dec_exp: _ID . _DEC
+
+    _INC  shift, and go to state 80
+    _DEC  shift, and go to state 81
+
+    _LZAGRADA  reduce using rule 46 ($@4)
+    $default   reduce using rule 93 (izraz)
+
+    $@4  go to state 83
+
+
+State 85
+
+   57 rel_exp: broj_exp_pp . _ROP broj_exp_pp
+
+    _ROP  shift, and go to state 104
+
+
+State 86
+
+   35 broj_exp_pp: broj_exp .
+   37 broj_exp: broj_exp . _AOP exp
+   39 exp: _LZAGRADA broj_exp . _DZAGRADA
+
+    _DZAGRADA  shift, and go to state 105
+    _AOP       shift, and go to state 91
+
+    $default  reduce using rule 35 (broj_exp_pp)
+
+
+State 87
+
+   59 prosireni_uslov: rel_exp .
+
+    $default  reduce using rule 59 (prosireni_uslov)
+
+
+State 88
+
+   91 kondicionalni_izraz: _LZAGRADA pp_prosireni_uslov . $@15 _DZAGRADA _UPITNIK $@16 izraz $@17 _DTACKA $@18 izraz
+
+    $default  reduce using rule 87 ($@15)
+
+    $@15  go to state 106
+
+
+State 89
+
+   58 pp_prosireni_uslov: prosireni_uslov .
+   61 prosireni_uslov: prosireni_uslov . _LOP $@7 rel_exp
+
+    _LOP  shift, and go to state 107
+
+    $default  reduce using rule 58 (pp_prosireni_uslov)
+
+
+State 90
+
+   62 return_naredba: _RETURN broj_exp_pp _TZAREZ .
+
+    $default  reduce using rule 62 (return_naredba)
+
+
+State 91
+
+   37 broj_exp: broj_exp _AOP . exp
+
+    _ID        shift, and go to state 84
+    _INT       shift, and go to state 55
+    _UINT      shift, and go to state 56
+    _LZAGRADA  shift, and go to state 57
+
+    exp                     go to state 108
+    literal                 go to state 62
+    poziv_funkcije          go to state 63
+    inc_exp                 go to state 64
+    pp_kondicionalni_izraz  go to state 65
+    kondicionalni_izraz     go to state 66
+    izraz                   go to state 67
+    dec_exp                 go to state 68
+
+
+State 92
+
+   33 naredba_dodele: _ID _DODELA broj_exp . _TZAREZ
+   37 broj_exp: broj_exp . _AOP exp
+
+    _TZAREZ  shift, and go to state 109
+    _AOP     shift, and go to state 91
+
+
+State 93
+
+   66 inc_naredba: _ID _INC $@8 . _TZAREZ
+
+    _TZAREZ  shift, and go to state 110
+
+
+State 94
+
+   95 dec_naredba: _ID _DEC $@19 . _TZAREZ
+
+    _TZAREZ  shift, and go to state 111
+
+
+State 95
+
+   34 naredba_dodele: _ID _LUGLASTA literal . _DUGLASTA _DODELA broj_exp _TZAREZ
+   67 inc_naredba: _ID _LUGLASTA literal . _DUGLASTA _INC _TZAREZ
+   96 dec_naredba: _ID _LUGLASTA literal . _DUGLASTA _DEC _TZAREZ
+
+    _DUGLASTA  shift, and go to state 112
+
+
+State 96
+
+   32 blok_naredba: _LVITICASTA lista_naredbi _DVITICASTA .
+
+    $default  reduce using rule 32 (blok_naredba)
+
+
+State 97
+
+   72 oiai_naredba: _OIAI @9 pp_prosireni_uslov . $@10 _HANA naredba
+
+    $default  reduce using rule 71 ($@10)
+
+    $@10  go to state 113
+
+
+State 98
+
+   76 jiro_iskaz: _JIRO @11 _LZAGRADA . _ID $@12 _DZAGRADA _LVITICASTA tranga_delovi toerana _DVITICASTA
+
+    _ID  shift, and go to state 114
+
+
+State 99
+
+   53 if_naredba: if_part _ELSE naredba .
+
+    $default  reduce using rule 53 (if_naredba)
+
+
+State 100
+
+   21 dekl_prom: _ID _LUGLASTA literal _DUGLASTA .
+
+    $default  reduce using rule 21 (dekl_prom)
+
+
+State 101
+
+   56 if_part: _IF _LZAGRADA @5 pp_prosireni_uslov . $@6 _DZAGRADA naredba
+
+    $default  reduce using rule 55 ($@6)
+
+    $@6  go to state 115
+
+
+State 102
+
+   64 return_naredba: _RETURN _ID _LUGLASTA literal . _DUGLASTA _TZAREZ
+
+    _DUGLASTA  shift, and go to state 116
+
+
+State 103
+
+   47 poziv_funkcije: _ID $@4 _LZAGRADA . argument _DZAGRADA
+
+    _ID        shift, and go to state 84
+    _INT       shift, and go to state 55
+    _UINT      shift, and go to state 56
+    _LZAGRADA  shift, and go to state 57
+
+    $default  reduce using rule 48 (argument)
+
+    broj_exp_pp                           go to state 117
+    broj_exp                              go to state 60
+    exp                                   go to state 61
+    literal                               go to state 62
+    poziv_funkcije                        go to state 63
+    argument                              go to state 118
+    argumenti_funkcije_vise_promenljivih  go to state 119
+    inc_exp                               go to state 64
+    pp_kondicionalni_izraz                go to state 65
+    kondicionalni_izraz                   go to state 66
+    izraz                                 go to state 67
+    dec_exp                               go to state 68
+
+
+State 104
+
+   57 rel_exp: broj_exp_pp _ROP . broj_exp_pp
+
+    _ID        shift, and go to state 84
+    _INT       shift, and go to state 55
+    _UINT      shift, and go to state 56
+    _LZAGRADA  shift, and go to state 57
+
+    broj_exp_pp             go to state 120
+    broj_exp                go to state 60
+    exp                     go to state 61
+    literal                 go to state 62
+    poziv_funkcije          go to state 63
+    inc_exp                 go to state 64
+    pp_kondicionalni_izraz  go to state 65
+    kondicionalni_izraz     go to state 66
+    izraz                   go to state 67
+    dec_exp                 go to state 68
+
+
+State 105
+
+   39 exp: _LZAGRADA broj_exp _DZAGRADA .
+
+    $default  reduce using rule 39 (exp)
+
+
+State 106
+
+   91 kondicionalni_izraz: _LZAGRADA pp_prosireni_uslov $@15 . _DZAGRADA _UPITNIK $@16 izraz $@17 _DTACKA $@18 izraz
+
+    _DZAGRADA  shift, and go to state 121
+
+
+State 107
+
+   61 prosireni_uslov: prosireni_uslov _LOP . $@7 rel_exp
+
+    $default  reduce using rule 60 ($@7)
+
+    $@7  go to state 122
+
+
+State 108
+
+   37 broj_exp: broj_exp _AOP exp .
+
+    $default  reduce using rule 37 (broj_exp)
+
+
+State 109
+
+   33 naredba_dodele: _ID _DODELA broj_exp _TZAREZ .
+
+    $default  reduce using rule 33 (naredba_dodele)
+
+
+State 110
+
+   66 inc_naredba: _ID _INC $@8 _TZAREZ .
+
+    $default  reduce using rule 66 (inc_naredba)
+
+
+State 111
+
+   95 dec_naredba: _ID _DEC $@19 _TZAREZ .
+
+    $default  reduce using rule 95 (dec_naredba)
+
+
+State 112
+
+   34 naredba_dodele: _ID _LUGLASTA literal _DUGLASTA . _DODELA broj_exp _TZAREZ
+   67 inc_naredba: _ID _LUGLASTA literal _DUGLASTA . _INC _TZAREZ
+   96 dec_naredba: _ID _LUGLASTA literal _DUGLASTA . _DEC _TZAREZ
+
+    _DODELA  shift, and go to state 123
+    _INC     shift, and go to state 124
+    _DEC     shift, and go to state 125
+
+
+State 113
+
+   72 oiai_naredba: _OIAI @9 pp_prosireni_uslov $@10 . _HANA naredba
+
+    _HANA  shift, and go to state 126
+
+
+State 114
+
+   76 jiro_iskaz: _JIRO @11 _LZAGRADA _ID . $@12 _DZAGRADA _LVITICASTA tranga_delovi toerana _DVITICASTA
+
+    $default  reduce using rule 75 ($@12)
+
+    $@12  go to state 127
+
+
+State 115
+
+   56 if_part: _IF _LZAGRADA @5 pp_prosireni_uslov $@6 . _DZAGRADA naredba
+
+    _DZAGRADA  shift, and go to state 128
+
+
+State 116
+
+   64 return_naredba: _RETURN _ID _LUGLASTA literal _DUGLASTA . _TZAREZ
+
+    _TZAREZ  shift, and go to state 129
+
+
+State 117
+
+   50 argumenti_funkcije_vise_promenljivih: broj_exp_pp .
+
+    $default  reduce using rule 50 (argumenti_funkcije_vise_promenljivih)
+
+
+State 118
+
+   47 poziv_funkcije: _ID $@4 _LZAGRADA argument . _DZAGRADA
+
+    _DZAGRADA  shift, and go to state 130
+
+
+State 119
+
+   49 argument: argumenti_funkcije_vise_promenljivih .
+   51 argumenti_funkcije_vise_promenljivih: argumenti_funkcije_vise_promenljivih . _ZAREZ broj_exp_pp
+
+    _ZAREZ  shift, and go to state 131
+
+    $default  reduce using rule 49 (argument)
+
+
+State 120
+
+   57 rel_exp: broj_exp_pp _ROP broj_exp_pp .
+
+    $default  reduce using rule 57 (rel_exp)
+
+
+State 121
+
+   91 kondicionalni_izraz: _LZAGRADA pp_prosireni_uslov $@15 _DZAGRADA . _UPITNIK $@16 izraz $@17 _DTACKA $@18 izraz
+
+    _UPITNIK  shift, and go to state 132
+
+
+State 122
+
+   61 prosireni_uslov: prosireni_uslov _LOP $@7 . rel_exp
+
+    _ID        shift, and go to state 84
+    _INT       shift, and go to state 55
+    _UINT      shift, and go to state 56
+    _LZAGRADA  shift, and go to state 57
+
+    broj_exp_pp             go to state 85
+    broj_exp                go to state 60
+    exp                     go to state 61
+    literal                 go to state 62
+    poziv_funkcije          go to state 63
+    rel_exp                 go to state 133
+    inc_exp                 go to state 64
+    pp_kondicionalni_izraz  go to state 65
+    kondicionalni_izraz     go to state 66
+    izraz                   go to state 67
+    dec_exp                 go to state 68
+
+
+State 123
+
+   34 naredba_dodele: _ID _LUGLASTA literal _DUGLASTA _DODELA . broj_exp _TZAREZ
+
+    _ID        shift, and go to state 84
+    _INT       shift, and go to state 55
+    _UINT      shift, and go to state 56
+    _LZAGRADA  shift, and go to state 57
+
+    broj_exp                go to state 134
+    exp                     go to state 61
+    literal                 go to state 62
+    poziv_funkcije          go to state 63
+    inc_exp                 go to state 64
+    pp_kondicionalni_izraz  go to state 65
+    kondicionalni_izraz     go to state 66
+    izraz                   go to state 67
+    dec_exp                 go to state 68
+
+
+State 124
+
+   67 inc_naredba: _ID _LUGLASTA literal _DUGLASTA _INC . _TZAREZ
+
+    _TZAREZ  shift, and go to state 135
+
+
+State 125
+
+   96 dec_naredba: _ID _LUGLASTA literal _DUGLASTA _DEC . _TZAREZ
+
+    _TZAREZ  shift, and go to state 136
+
+
+State 126
+
+   72 oiai_naredba: _OIAI @9 pp_prosireni_uslov $@10 _HANA . naredba
+
+    _IF          shift, and go to state 31
+    _RETURN      shift, and go to state 32
+    _ID          shift, and go to state 33
+    _LVITICASTA  shift, and go to state 34
+    _OIAI        shift, and go to state 36
+    _JIRO        shift, and go to state 37
+
+    naredba          go to state 137
+    blok_naredba     go to state 39
+    naredba_dodele   go to state 40
+    if_naredba       go to state 41
+    if_part          go to state 42
+    return_naredba   go to state 43
+    inc_naredba      go to state 44
+    pp_oiai_naredba  go to state 45
+    oiai_naredba     go to state 46
+    pp_jiro_iskaz    go to state 47
+    jiro_iskaz       go to state 48
+    dec_naredba      go to state 49
+
+
+State 127
+
+   76 jiro_iskaz: _JIRO @11 _LZAGRADA _ID $@12 . _DZAGRADA _LVITICASTA tranga_delovi toerana _DVITICASTA
+
+    _DZAGRADA  shift, and go to state 138
+
+
+State 128
+
+   56 if_part: _IF _LZAGRADA @5 pp_prosireni_uslov $@6 _DZAGRADA . naredba
+
+    _IF          shift, and go to state 31
+    _RETURN      shift, and go to state 32
+    _ID          shift, and go to state 33
+    _LVITICASTA  shift, and go to state 34
+    _OIAI        shift, and go to state 36
+    _JIRO        shift, and go to state 37
+
+    naredba          go to state 139
+    blok_naredba     go to state 39
+    naredba_dodele   go to state 40
+    if_naredba       go to state 41
+    if_part          go to state 42
+    return_naredba   go to state 43
+    inc_naredba      go to state 44
+    pp_oiai_naredba  go to state 45
+    oiai_naredba     go to state 46
+    pp_jiro_iskaz    go to state 47
+    jiro_iskaz       go to state 48
+    dec_naredba      go to state 49
+
+
+State 129
+
+   64 return_naredba: _RETURN _ID _LUGLASTA literal _DUGLASTA _TZAREZ .
+
+    $default  reduce using rule 64 (return_naredba)
+
+
+State 130
+
+   47 poziv_funkcije: _ID $@4 _LZAGRADA argument _DZAGRADA .
+
+    $default  reduce using rule 47 (poziv_funkcije)
+
+
+State 131
+
+   51 argumenti_funkcije_vise_promenljivih: argumenti_funkcije_vise_promenljivih _ZAREZ . broj_exp_pp
+
+    _ID        shift, and go to state 84
+    _INT       shift, and go to state 55
+    _UINT      shift, and go to state 56
+    _LZAGRADA  shift, and go to state 57
+
+    broj_exp_pp             go to state 140
+    broj_exp                go to state 60
+    exp                     go to state 61
+    literal                 go to state 62
+    poziv_funkcije          go to state 63
+    inc_exp                 go to state 64
+    pp_kondicionalni_izraz  go to state 65
+    kondicionalni_izraz     go to state 66
+    izraz                   go to state 67
+    dec_exp                 go to state 68
+
+
+State 132
+
+   91 kondicionalni_izraz: _LZAGRADA pp_prosireni_uslov $@15 _DZAGRADA _UPITNIK . $@16 izraz $@17 _DTACKA $@18 izraz
+
+    $default  reduce using rule 88 ($@16)
+
+    $@16  go to state 141
+
+
+State 133
+
+   61 prosireni_uslov: prosireni_uslov _LOP $@7 rel_exp .
+
+    $default  reduce using rule 61 (prosireni_uslov)
+
+
+State 134
+
+   34 naredba_dodele: _ID _LUGLASTA literal _DUGLASTA _DODELA broj_exp . _TZAREZ
+   37 broj_exp: broj_exp . _AOP exp
+
+    _TZAREZ  shift, and go to state 142
+    _AOP     shift, and go to state 91
+
+
+State 135
+
+   67 inc_naredba: _ID _LUGLASTA literal _DUGLASTA _INC _TZAREZ .
+
+    $default  reduce using rule 67 (inc_naredba)
+
+
+State 136
+
+   96 dec_naredba: _ID _LUGLASTA literal _DUGLASTA _DEC _TZAREZ .
+
+    $default  reduce using rule 96 (dec_naredba)
+
+
+State 137
+
+   72 oiai_naredba: _OIAI @9 pp_prosireni_uslov $@10 _HANA naredba .
+
+    $default  reduce using rule 72 (oiai_naredba)
+
+
+State 138
+
+   76 jiro_iskaz: _JIRO @11 _LZAGRADA _ID $@12 _DZAGRADA . _LVITICASTA tranga_delovi toerana _DVITICASTA
+
+    _LVITICASTA  shift, and go to state 143
+
+
+State 139
+
+   56 if_part: _IF _LZAGRADA @5 pp_prosireni_uslov $@6 _DZAGRADA naredba .
+
+    $default  reduce using rule 56 (if_part)
+
+
+State 140
+
+   51 argumenti_funkcije_vise_promenljivih: argumenti_funkcije_vise_promenljivih _ZAREZ broj_exp_pp .
+
+    $default  reduce using rule 51 (argumenti_funkcije_vise_promenljivih)
+
+
+State 141
+
+   91 kondicionalni_izraz: _LZAGRADA pp_prosireni_uslov $@15 _DZAGRADA _UPITNIK $@16 . izraz $@17 _DTACKA $@18 izraz
+
+    _ID    shift, and go to state 144
+    _INT   shift, and go to state 55
+    _UINT  shift, and go to state 56
+
+    literal  go to state 62
+    izraz    go to state 145
+
+
+State 142
+
+   34 naredba_dodele: _ID _LUGLASTA literal _DUGLASTA _DODELA broj_exp _TZAREZ .
+
+    $default  reduce using rule 34 (naredba_dodele)
+
+
+State 143
+
+   76 jiro_iskaz: _JIRO @11 _LZAGRADA _ID $@12 _DZAGRADA _LVITICASTA . tranga_delovi toerana _DVITICASTA
+
+    _TRANGA  shift, and go to state 146
+
+    tranga_delovi  go to state 147
+    tranga_deo     go to state 148
+
+
+State 144
+
+   93 izraz: _ID .
+
+    $default  reduce using rule 93 (izraz)
+
+
+State 145
+
+   91 kondicionalni_izraz: _LZAGRADA pp_prosireni_uslov $@15 _DZAGRADA _UPITNIK $@16 izraz . $@17 _DTACKA $@18 izraz
+
+    $default  reduce using rule 89 ($@17)
+
+    $@17  go to state 149
+
+
+State 146
+
+   80 tranga_deo: _TRANGA . $@13 literal _IMPL naredba
+
+    $default  reduce using rule 79 ($@13)
+
+    $@13  go to state 150
+
+
+State 147
+
+   76 jiro_iskaz: _JIRO @11 _LZAGRADA _ID $@12 _DZAGRADA _LVITICASTA tranga_delovi . toerana _DVITICASTA
+   78 tranga_delovi: tranga_delovi . tranga_deo
+
+    _TRANGA   shift, and go to state 146
+    _TOERANA  shift, and go to state 151
+
+    $default  reduce using rule 82 (toerana)
+
+    tranga_deo   go to state 152
+    toerana      go to state 153
+    toerana_deo  go to state 154
+
+
+State 148
+
+   77 tranga_delovi: tranga_deo .
+   81 tranga_deo: tranga_deo . _FINISH _TZAREZ
+
+    _FINISH  shift, and go to state 155
+
+    $default  reduce using rule 77 (tranga_delovi)
+
+
+State 149
+
+   91 kondicionalni_izraz: _LZAGRADA pp_prosireni_uslov $@15 _DZAGRADA _UPITNIK $@16 izraz $@17 . _DTACKA $@18 izraz
+
+    _DTACKA  shift, and go to state 156
+
+
+State 150
+
+   80 tranga_deo: _TRANGA $@13 . literal _IMPL naredba
+
+    _INT   shift, and go to state 55
+    _UINT  shift, and go to state 56
+
+    literal  go to state 157
+
+
+State 151
+
+   85 toerana_deo: _TOERANA . $@14 _IMPL naredba
+
+    $default  reduce using rule 84 ($@14)
+
+    $@14  go to state 158
+
+
+State 152
+
+   78 tranga_delovi: tranga_delovi tranga_deo .
+   81 tranga_deo: tranga_deo . _FINISH _TZAREZ
+
+    _FINISH  shift, and go to state 155
+
+    $default  reduce using rule 78 (tranga_delovi)
+
+
+State 153
+
+   76 jiro_iskaz: _JIRO @11 _LZAGRADA _ID $@12 _DZAGRADA _LVITICASTA tranga_delovi toerana . _DVITICASTA
+
+    _DVITICASTA  shift, and go to state 159
+
+
+State 154
+
+   83 toerana: toerana_deo .
+
+    $default  reduce using rule 83 (toerana)
+
+
+State 155
+
+   81 tranga_deo: tranga_deo _FINISH . _TZAREZ
+
+    _TZAREZ  shift, and go to state 160
+
+
+State 156
+
+   91 kondicionalni_izraz: _LZAGRADA pp_prosireni_uslov $@15 _DZAGRADA _UPITNIK $@16 izraz $@17 _DTACKA . $@18 izraz
+
+    $default  reduce using rule 90 ($@18)
+
+    $@18  go to state 161
+
+
+State 157
+
+   80 tranga_deo: _TRANGA $@13 literal . _IMPL naredba
+
+    _IMPL  shift, and go to state 162
+
+
+State 158
+
+   85 toerana_deo: _TOERANA $@14 . _IMPL naredba
+
+    _IMPL  shift, and go to state 163
+
+
+State 159
+
+   76 jiro_iskaz: _JIRO @11 _LZAGRADA _ID $@12 _DZAGRADA _LVITICASTA tranga_delovi toerana _DVITICASTA .
+
+    $default  reduce using rule 76 (jiro_iskaz)
+
+
+State 160
+
+   81 tranga_deo: tranga_deo _FINISH _TZAREZ .
+
+    $default  reduce using rule 81 (tranga_deo)
+
+
+State 161
+
+   91 kondicionalni_izraz: _LZAGRADA pp_prosireni_uslov $@15 _DZAGRADA _UPITNIK $@16 izraz $@17 _DTACKA $@18 . izraz
+
+    _ID    shift, and go to state 144
+    _INT   shift, and go to state 55
+    _UINT  shift, and go to state 56
+
+    literal  go to state 62
+    izraz    go to state 164
+
+
+State 162
+
+   80 tranga_deo: _TRANGA $@13 literal _IMPL . naredba
+
+    _IF          shift, and go to state 31
+    _RETURN      shift, and go to state 32
+    _ID          shift, and go to state 33
+    _LVITICASTA  shift, and go to state 34
+    _OIAI        shift, and go to state 36
+    _JIRO        shift, and go to state 37
+
+    naredba          go to state 165
+    blok_naredba     go to state 39
+    naredba_dodele   go to state 40
+    if_naredba       go to state 41
+    if_part          go to state 42
+    return_naredba   go to state 43
+    inc_naredba      go to state 44
+    pp_oiai_naredba  go to state 45
+    oiai_naredba     go to state 46
+    pp_jiro_iskaz    go to state 47
+    jiro_iskaz       go to state 48
+    dec_naredba      go to state 49
+
+
+State 163
+
+   85 toerana_deo: _TOERANA $@14 _IMPL . naredba
+
+    _IF          shift, and go to state 31
+    _RETURN      shift, and go to state 32
+    _ID          shift, and go to state 33
+    _LVITICASTA  shift, and go to state 34
+    _OIAI        shift, and go to state 36
+    _JIRO        shift, and go to state 37
+
+    naredba          go to state 166
+    blok_naredba     go to state 39
+    naredba_dodele   go to state 40
+    if_naredba       go to state 41
+    if_part          go to state 42
+    return_naredba   go to state 43
+    inc_naredba      go to state 44
+    pp_oiai_naredba  go to state 45
+    oiai_naredba     go to state 46
+    pp_jiro_iskaz    go to state 47
+    jiro_iskaz       go to state 48
+    dec_naredba      go to state 49
+
+
+State 164
+
+   91 kondicionalni_izraz: _LZAGRADA pp_prosireni_uslov $@15 _DZAGRADA _UPITNIK $@16 izraz $@17 _DTACKA $@18 izraz .
+
+    $default  reduce using rule 91 (kondicionalni_izraz)
+
+
+State 165
+
+   80 tranga_deo: _TRANGA $@13 literal _IMPL naredba .
+
+    $default  reduce using rule 80 (tranga_deo)
+
+
+State 166
+
+   85 toerana_deo: _TOERANA $@14 _IMPL naredba .
+
+    $default  reduce using rule 85 (toerana_deo)
